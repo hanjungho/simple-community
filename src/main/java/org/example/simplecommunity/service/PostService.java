@@ -14,15 +14,9 @@ public class PostService {
     }
 
     public void post(String nickname, String password, String title, String contents) {
-        //EntityManagerFactory 생성
-        EntityManager entityManager;
-        try (EntityManagerFactory emf = Persistence.createEntityManagerFactory("PersistenceUnit")) {
-            //EntityManager 생성
-            entityManager = emf.createEntityManager();
-        }
-        //EntityTransaction 생성
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("PersistenceUnit");
+        EntityManager entityManager = emf.createEntityManager();
         EntityTransaction tx = entityManager.getTransaction();
-        //트랜잭션 시작
         tx.begin();
 
         try {
@@ -31,11 +25,13 @@ public class PostService {
             posts.setTitle(title);
             posts.setContents(contents);
             entityManager.persist(posts);
+            tx.commit();
         } catch (Exception e) {
             tx.rollback();
             e.printStackTrace();
         } finally {
-            tx.commit();
+            entityManager.close();
+            emf.close();
         }
     }
 }

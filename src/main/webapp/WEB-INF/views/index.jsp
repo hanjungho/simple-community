@@ -6,7 +6,7 @@
 </head>
 <body>
   <h1>글 등록</h1>
-  <form>
+  <form method="post" action="/post">
     <label>닉네임: <input name="nickname"></label>
     <label>비밀번호: <input name="password"></label>
     <label>제목: <input name="title"></label>
