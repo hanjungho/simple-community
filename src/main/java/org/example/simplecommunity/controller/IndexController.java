@@ -8,6 +8,7 @@ import org.example.simplecommunity.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,11 +28,20 @@ public class IndexController {
     }
 
     @PostMapping("/post")
-    public String createPost(@RequestParam("nickname") String nickname,
-                             @RequestParam("password") String password,
-                             @RequestParam("title") String title,
-                             @RequestParam("contents") String contents) {
+    public String createPost(
+            @RequestParam("nickname") String nickname,
+            @RequestParam("password") String password,
+            @RequestParam("title") String title,
+            @RequestParam("contents") String contents,
+            BindingResult bindingResult,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("error", "입력값을 확인해주세요");
+            return "index";
+        }
+
         postService.post(nickname, password, title, contents);
-        return "redirect:/";
+        return "redirect:/?success=true";
     }
 }

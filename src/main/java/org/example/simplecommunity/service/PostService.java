@@ -5,15 +5,14 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import org.example.simplecommunity.model.dto.CommunityPosts;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PostService {
-    CommunityPosts posts;
 
-    public PostService() {
-        this.posts = new CommunityPosts();
-    }
 
     public void post(String nickname, String password, String title, String contents) {
+        CommunityPosts posts = new CommunityPosts();
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("PersistenceUnit");
         EntityManager entityManager = emf.createEntityManager();
         EntityTransaction tx = entityManager.getTransaction();
